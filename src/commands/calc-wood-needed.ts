@@ -1,5 +1,5 @@
 import { Arguments, Argv } from "yargs";
-import { calculateHouseRequirements } from "../wallCalculator";
+
 
 export function calcWoodNeeded(yargs: Argv): void {
     // create a new yargs "command"
@@ -18,9 +18,9 @@ export function calcWoodNeeded(yargs: Argv): void {
                 description: "The width of the house",
             },
 
-            Inchs: {
+            length: {
                 type: "number",
-                alias: "I",
+                alias: "l",
                 description: "extra inchs for the wall width",
             },
         },
@@ -29,16 +29,14 @@ export function calcWoodNeeded(yargs: Argv): void {
         function (
             args: Arguments<{
                 width: number;
-                
-                Inchs: number;
+                length: number;
                 w: number;
-               
-                I: number;
+                l: number;
             }>
         ) {
-            const requirements = calculateHouseRequirements(
+            const requirements = (
                 args.width,
-                args.Inchs
+                args.length
             );
 
             console.log(requirements);

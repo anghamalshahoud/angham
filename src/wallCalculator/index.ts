@@ -1,156 +1,172 @@
-const Post_WIDTH = 3.5;
-const BOARD_LENGTH = 8 * 12;
-const WASTE_MULTIPLIER = 0.1;
-const STUDS_OFFSET = 16;
+ const postsWidth = 3.5;
+ const spaceApart = 16;
+ const extraMultiplayer = 0.1;
+ const BoardLength = 8 * 12;
 
-// Posts are required every 20 feet at minimum
-const Posts_REQUIRED_EVERY_INCHES = 20 * 12;
-const FULL_BOARDS_IN_SECTION = Math.floor(
-    Posts_REQUIRED_EVERY_INCHES / BOARD_LENGTH
-);
-const FULL_BOARD_SECTION_SIZE = FULL_BOARDS_IN_SECTION * BOARD_LENGTH;
+ // Posts are required every 20 feet at minimum
+ const Posts_requiered_everyInches = 20 * 12;
+ const FullBoardInSection = Math.floor(Posts_requiered_everyInches / BoardLength);
+ const FullBoardSectionSize = FullBoardInSection * BoardLength;
 
-function convertFeetToInches(feet: number) {
-    return feet * 12;
-}
 
-function getPlatesInLength(inches: number) {
-    // devide the length by 96 inches (8 feet) and round up
-    // multiply by two because we're doing the top and bottom in one calculation
-    return Math.ceil(inches / BOARD_LENGTH) * 2;
-}
+function feetintoinches(feet: number) {
+    // this function will convert feet into inches.
+    return (feet * 12);
+ }
 
-function getStudsInLength(inches: number) {
+
+function top_bottom_plates(inches: number) {
+    // this function will calculate the number of plates needed.
+
+    //multiplying it by two because Geralds want to have two top rows.
+    let top_plates = (Math.ceil(inches / BoardLength) * 2);
+
+    // calculation for the bottom plates.
+    let bottom_plates = Math.ceil(inches / BoardLength);
+
+    return (bottom_plates + top_plates)
+ }
+
+ 
+function all_plates(inches:number){
+    // get all plates together
+    const plates = top_bottom_plates(inches);
+    return plates;
+ }
+
+
+function studsInLength(inches: number) {
+
     // calculate the studs across
     // round up to account for the last one
-    const studs = Math.ceil(inches / STUDS_OFFSET);
 
-    // make sure we add an end piece if we have a perfect multiple of 16
-    const isNotPerfectWidth = Math.min(inches % STUDS_OFFSET, 1);
+    const studs = Math.ceil(inches / spaceApart)
+
+    // make sure we add an end piece if we have a perfect multiple of 16.
+
+    const isNotPerfectWidth = Math.min(inches % spaceApart, 1);
     const perfectWidthExtension = isNotPerfectWidth * -1 + 1;
     return studs + perfectWidthExtension;
-}
+ }
 
-function getBoardsInLength(inches: number): number {
-    const plates = getPlatesInLength(inches);
-    const studs = getStudsInLength(inches);
+function getBoardsinlength(inches:number){
+    // get all studs together
+    const studs = studsInLength(inches);
+    return studs;
+ }
 
-    return plates + studs;
-}
+function getWallLengthOverMinimumRequiredBeforePost(inches: number): number {
+    return Math.max(inches - Posts_requiered_everyInches, 0);
+ }
+
 
 function getRequiredPostsInLength(inches: number) {
     // for every 20 feet, we need one post
     // we know our wall is at least 20 feet, so calculate the required posts for the REST of the wall
     // if our wall is under 20 feet, this will return zero
-    const wallLengthOverMinRequired = getWallLengthOverMinimumRequiredBeforePost(
-        inches
-    );
-    const wallLengthPlusPost = Posts_REQUIRED_EVERY_INCHES + Post_WIDTH;
-    const requiredPosts = Math.ceil(
-        wallLengthOverMinRequired / wallLengthPlusPost
-    );
+
+    const wallLengthOverMinRequired = getWallLengthOverMinimumRequiredBeforePost(inches);
+    const wallLengthPlusPost = Posts_requiered_everyInches + postsWidth;
+    const requiredPosts = Math.ceil(wallLengthOverMinRequired / wallLengthPlusPost);
 
     return requiredPosts;
-}
+ }
 
-function getWallLengthOverMinimumRequiredBeforePost(inches: number): number {
-    return Math.max(inches - Posts_REQUIRED_EVERY_INCHES, 0);
-}
 
-// any number of inches past Posts_REQUIRED_EVERY_INCHES will return 1
-// any number of inches below or equal to Posts_REQUIRED_EVERY_INCHES return 0
 function isPostRequired(inches: number): number {
+    // any number of inches past Posts_requiered_everyInches will return 1
+    // any number of inches below or equal to Posts_requiered_everyInches return 0
+
     // negative numbers are zero
-    const wallLengthOverMinRequired = Math.max(
-        inches - Posts_REQUIRED_EVERY_INCHES,
-        0
-    );
+    const wallLengthOverMinRequired = Math.max(inches - Posts_requiered_everyInches, 0);
 
     // remove decimals
     const wholeNumber = Math.ceil(wallLengthOverMinRequired);
 
-    // returns 1 (at least one post required ) or 0 (no Posts required)
+    // returns 1 (at least one post required ) or 0 (no posts required)
     const isPostRequired = Math.min(wholeNumber, 1);
 
     return isPostRequired;
-}
+ }
 
-function getFullSections(inches: number, Posts: number) {
+
+function getFullSections(inches: number, posts: number) {
     // how many inches will we remove from a section between posts to get to the last full board
-    const inchesReducedPerSection =
-        Posts_REQUIRED_EVERY_INCHES - FULL_BOARD_SECTION_SIZE;
+    const inchesReducedPerSection = Posts_requiered_everyInches - FullBoardSectionSize;
 
-    // how big is the last section if all posts are at Posts_REQUIRED_EVERY_INCHES
-    const lastSectionSize =
-        inches - Posts * (Posts_REQUIRED_EVERY_INCHES + Post_WIDTH);
+    // how big is the last section if all posts are at Posts_requiered_everyInches
+    const lastSectionSize = inches - posts * (Posts_requiered_everyInches + postsWidth);
 
     // how many inches of boards can we add to the last section before it will add an additional post to the structure
-    const remainingBeforeNewPost =
-        Posts_REQUIRED_EVERY_INCHES - lastSectionSize;
+    const remainingBeforeNewPost = Posts_requiered_everyInches - lastSectionSize;
 
     // how many complete portions of the inchesReducedPerSection can we move to the last section
-    let fullSections = Math.floor(
-        remainingBeforeNewPost / inchesReducedPerSection
+    let fullSections = Math.floor(remainingBeforeNewPost / inchesReducedPerSection
     );
 
     // even if we can FIT fullSections moved into the last portion, we might not HAVE them in our length
-    fullSections = Math.min(fullSections, Posts);
+    fullSections = Math.min(fullSections, posts);
 
     // safeguard inches not requiring a post and return value
     fullSections = fullSections * isPostRequired(inches);
 
     return fullSections;
-}
+ }
 
-function getLastSectionSize(inches: number, Posts: number) {
-    const fullSections = getFullSections(inches, Posts);
-    const lastSectionSize =
-        inches - Posts * Post_WIDTH - fullSections * FULL_BOARD_SECTION_SIZE;
+
+function getLastSectionSize(inches: number, posts: number) {
+    const fullSections = getFullSections(inches, posts);
+    const lastSectionSize = inches - posts * postsWidth - fullSections * FullBoardSectionSize;
 
     return lastSectionSize;
-}
+ }
+
 
 function buildWall(inches: number) {
     // get required posts
     const requiredPosts = getRequiredPostsInLength(inches);
     const fullSections = getFullSections(inches, requiredPosts);
     const lastSectionSize = getLastSectionSize(inches, requiredPosts);
-    const studs =
-        getBoardsInLength(FULL_BOARD_SECTION_SIZE) * fullSections +
-        getBoardsInLength(lastSectionSize);
+    const studs = getBoardsinlength(FullBoardSectionSize) * fullSections + getBoardsinlength(lastSectionSize);
+    const plates = all_plates(FullBoardSectionSize) * fullSections + all_plates(lastSectionSize);
 
-    return {
-        function: "buildWall",
-        studs: studs,
-        PostsTotal: requiredPosts,
-    };
-}
+       return {
+       function: "buildWall",
+       inches,
+       studs: studs,
+       plates: plates,
+       posts: requiredPosts,
+       };
+ }
 
+ 
 function accountForWaste(items: number): number {
-    const waste = Math.ceil(items * WASTE_MULTIPLIER);
-    return waste + items;
-}
+   const waste = Math.ceil(items * extraMultiplayer);
+   return waste + items;
+ }
 
-export function calculateHouseRequirements(
-    widthInFeet: number,
-    lengthInFeet: number
-) {
+ export function calculateHouseRequirements( widthInFeet: number,lengthInFeet: number) {
     // convert feet to inches
-    const outerWidthOfHouse = convertFeetToInches(widthInFeet);
-    const outerLengthOfHouse = convertFeetToInches(lengthInFeet);
+    const outerWidthOfHouse = feetintoinches(widthInFeet);
+    const outerLengthOfHouse = feetintoinches(lengthInFeet);
 
     // calculate the space inbetween corner posts
-    const innerWidthOfHouse = outerWidthOfHouse - Post_WIDTH * 2;
-    const innerLengthOfHouse = outerLengthOfHouse - Post_WIDTH * 2;
+    const innerWidthOfHouse = outerWidthOfHouse - postsWidth * 2;
+    const innerLengthOfHouse = outerLengthOfHouse - postsWidth * 2;
 
     const wall1 = buildWall(innerWidthOfHouse);
     const wall2 = buildWall(innerLengthOfHouse);
-
+ 
     const studs = accountForWaste((wall1.studs + wall2.studs) * 2);
-    const PostsTotal = accountForWaste((wall1.PostsTotal + wall2.PostsTotal) * 2 + 4);
+    const posts = accountForWaste((wall1.posts + wall2.posts) * 2 + 4);
 
-    return {
-        studs: studs,
-        PostsTotal: PostsTotal,
-    };
-}
+ 
+    const plates = accountForWaste((wall1.plates + wall2.plates) * 2);
+    
+       return {
+       studs: studs,
+       posts: posts,
+       plates: plates,
+       };
+
+ }
