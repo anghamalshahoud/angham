@@ -1,19 +1,23 @@
-# Focus College ACSD Assignment 3
-
-This respository is intended for the use of Focus College Students enrolled in the Advanced Certificate of Software Development located in Kelowna, BC and Surrey, BC.
-
+# Geralds Contracting
 ---
 
-You can remove everything below the above line once you're ready to edit this file.
+This application is build for calculating the studs, posts, and plates needed for a single wall based on Geralds requirements which you can read [here](https://github.com/Focus-College/developing-software-intro-assignment-3/blob/master/assignment/user-stories.md#geralds-contracting-application-assignment-3).
 
-## Getting Started
+## How to use this application
+---
+ First you need to run the following to build the application:
 
-Please read the [Assignment Requirements](./assignment/assignment.md).
+ ```
+ tsc
+ ```
 
-## Deadline for Submissions
+ Second put your numbers in the following order:
 
-The deadline for this assignment is 5PM on THURSDAY SEPTEMBER 24th, 2020.
+ ```
+npm start -- calc-wood-needed -w feet -i inches
+```
+ 
+If you want to recall a wall you've allready calculated it :
 
-## Notes
-
-This is a PUBLIC repository attached to your github account and something that you can demonstrate to potential employers. Take care to ensure professionalism for both you and your team's sake. This will be the first entry into your professional portfolio.
+```
+```
