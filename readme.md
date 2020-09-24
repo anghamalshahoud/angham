@@ -14,10 +14,9 @@ This application is build for calculating the studs, posts, and plates needed fo
  Second put your numbers in the following order:
 
  ```
-npm start -- calc-wood-needed -w feet -i inches
+npm start -- calc-wood-needed -n 'customer name' -w feet -i inches
 ```
  
-If you want to recall a wall you've allready calculated it :
+ Note: I wasn't able to make the application call back the calculated houses by  thier customer name sorry for that I tried my best. 
 
-```
-```
+ but if you want to see all the customer files you can go to the dist > data you'll find all of your files there! :) 
