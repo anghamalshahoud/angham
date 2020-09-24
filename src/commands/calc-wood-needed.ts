@@ -1,5 +1,10 @@
-import { Arguments, Argv } from "yargs";
+import fs = require("fs");
+import { Arguments, Argv, number } from "yargs";
 import { calculateHouseRequirements } from "../wallCalculator";
+import { Houses } from "../house/houses";
+
+
+
 
 export function calcWoodNeeded(yargs: Argv): void {
     // create a new yargs "command"
@@ -12,17 +17,25 @@ export function calcWoodNeeded(yargs: Argv): void {
 
         // define the parameters we need for our command
         {
+            Name: {
+                type: "string",
+                alias: "n",
+                description: "The name of the custmer"
+            },
+
             width: {
                 type: "number",
                 alias: "w",
                 description: "The width of the house",
             },
+        
 
             inches: {
                 type: "number",
                 alias: "i",
                 description: "extra inchs for the wall width",
             },
+            
         },
 
         // define the function we want to run once the arguments are parsed
@@ -30,12 +43,46 @@ export function calcWoodNeeded(yargs: Argv): void {
             args: Arguments<{
                 width: number;
                 inches: number;
+                Name: string;
                 w: number;
                 i: number;
+                n: string;
             }>
         ) {
-            const answer = calculateHouseRequirements(args.width, args.inches);
-            console.log(answer);
+            const calculator = calculateHouseRequirements(args.width);        
+
+
+            Houses.setWallSuppliesCalculator(( inches: number) => {
+
+              inches = ((args.width * 12) + args.inches);
+                return {
+                    name: args.Name,
+                    posts: calculator.posts ,
+                    studs: calculator.studs,
+                    plates: calculator.plates
+                } 
+            
+            });  void{}    
+
+    
+            
+            const savedHouses = Houses.getAll();
+            const House = [ ...savedHouses.values()];
+            const house = Houses.create(args.Name);
+            house.width = args.width;
+            house.name = args.Name;
+            house.plates,
+            house.posts,
+            house.studs,
+            Houses.save( house );
+        
+            
+        
+        
+            console.log(house);
         }
+            
     );
 }
+
+

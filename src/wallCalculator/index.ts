@@ -5,7 +5,7 @@ const BoardLength = 8 * 12;
 
 // Posts are required every 20 feet at minimum
 const Posts_requiered_everyInches = 20 * 12;
-const FullBoardInSection = Math.floor( Posts_requiered_everyInches / BoardLength);
+const FullBoardInSection = Math.floor(Posts_requiered_everyInches / BoardLength);
 const FullBoardSectionSize = FullBoardInSection * BoardLength;
 
 function feetintoinches(feet: number) {
@@ -137,24 +137,40 @@ function accountForWaste(items: number): number {
     return waste + items;
 }
 
-export function calculateHouseRequirements(widthInFeet: number,Inches: number) {
-    // convert feet to inches
-    const outerWidthOfHouse = (feetintoinches(widthInFeet)) + Inches
+export function calculateHouseRequirements(inches: number) {
 
     // calculate the space inbetween corner posts
-    const innerWidthOfHouse = outerWidthOfHouse - postsWidth * 2;
-   
+     const innerWidthOfHouse = inches - postsWidth * 2;
 
-    const wall1 = buildWall(innerWidthOfHouse);
 
-    const studs = accountForWaste((wall1.studs));
-    const posts = accountForWaste(wall1.posts);
 
-    const plates = accountForWaste(wall1.plates);
 
-    return {
-        studs: studs,
-        posts: posts,
-        plates: plates,
-    };
+     const wall1 = buildWall(innerWidthOfHouse);
+
+
+     const studs = accountForWaste(wall1.studs) * 2;
+
+
+     const posts = accountForWaste(wall1.posts) * 2;
+
+
+
+
+     const plates = accountForWaste(wall1.plates) * 2;
+
+
+          return {
+         studs: studs,
+
+         posts: posts,
+
+         plates: plates,
+
+
+        };
 }
+
+
+
+
+
