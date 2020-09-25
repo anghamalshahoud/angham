@@ -3,7 +3,7 @@ import { Arguments, Argv, number } from "yargs";
 import { calculateHouseRequirements } from "../wallCalculator";
 import { Houses } from "../house/houses";
 
-
+ 
 
 
 export function calcWoodNeeded(yargs: Argv): void {
