@@ -14,9 +14,40 @@ This application is build for calculating the studs, posts, and plates needed fo
  Second put your numbers in the following order:
 
  ```
-npm start -- calc-wood-needed -n 'customer name' -w feet -i inches
+npm start -- calc-wood-needed -n 'customer name' -w (widthinfeet) -wi (extra inches for the width) -l (lengthinfeet) -li (extra inches for the length)
 ```
+### Example
+```
+npm start -- calc-wood-needed -n 'Jacklyn' -w 8 -wi 5 -l 8 -li 5
+```
+this will give us a results of:
+```
+  _width: 8,
+  _length: 0,
+  name: 'Jacklyn',
+  widthMaterials: { name: 'Jacklyn', posts: 0, studs: 14, plates: 8 },
+  lengthMaterials: { name: 'Jacklyn', posts: 0, studs: 14, plates: 8 }
+  ```
  
- Note: I wasn't able to make the application call back the calculated houses by  thier customer name sorry for that I tried my best. 
+If you want to search an existing customer house using the customer name run the following command:
 
- but if you want to see all the customer files you can go to the dist > data you'll find all of your files there! :) 
+```
+npm start -- customer-house -n 'customer name'
+```
+
+### Example 
+
+```
+npm start -- customer-house -n 'Jacklyn'
+```
+
+this will give us the following:
+```
+_width: 8,
+  _length: 0,
+  name: 'Jacklyn',
+  widthMaterials: { studs: 14, posts: 0, plates: 8 },
+  lengthMaterials: { studs: 18, posts: 0, plates: 0 }
+  ```
+
+# last edit by: Angham Alshahud.
