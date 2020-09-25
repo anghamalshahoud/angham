@@ -1,7 +1,8 @@
 import fs = require("fs");
-import { Arguments, Argv, number } from "yargs";
-import { calculateHouseRequirements } from "../wallCalculator";
+import { Arguments, Argv, string } from "yargs";
+import { calculateWidthRequirements } from "../wallCalculator";
 import { Houses } from "../house/houses";
+import {getCustomersHouses} from "./get_customers"
 
  
 
@@ -28,13 +29,13 @@ export function calcWoodNeeded(yargs: Argv): void {
                 alias: "w",
                 description: "The width of the house",
             },
-        
 
-            inches: {
+            inches:{
                 type: "number",
                 alias: "i",
-                description: "extra inchs for the wall width",
+                description: "extra inches to the width",
             },
+        
             
         },
 
@@ -49,12 +50,14 @@ export function calcWoodNeeded(yargs: Argv): void {
                 n: string;
             }>
         ) {
-            const calculator = calculateHouseRequirements(args.width);        
+            const calculator = calculateWidthRequirements(args.width);   
+            
+            
 
 
             Houses.setWallSuppliesCalculator(( inches: number) => {
 
-              inches = ((args.width * 12) + args.inches);
+              inches = (args.width * 12) + args.inches;
                 return {
                     name: args.Name,
                     posts: calculator.posts ,
@@ -62,7 +65,9 @@ export function calcWoodNeeded(yargs: Argv): void {
                     plates: calculator.plates
                 } 
             
-            });  void{}    
+            }); void {}; 
+
+             
 
     
             
@@ -82,6 +87,7 @@ export function calcWoodNeeded(yargs: Argv): void {
             console.log(house);
         }
             
+        
     );
 }
 
