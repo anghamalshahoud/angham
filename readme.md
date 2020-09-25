@@ -14,11 +14,11 @@ This application is build for calculating the studs, posts, and plates needed fo
  Second put your numbers in the following order:
 
  ```
-npm start -- calc-wood-needed -n 'customer name' -w (widthinfeet) -wi (extra inches for the width) -l (lengthinfeet) -li (extra inches for the length)
+npm start -- calc-wood-needed -n 'customer name' -w (widthinfeet) -i (extra inches for the width) 
 ```
 ### Example
 ```
-npm start -- calc-wood-needed -n 'Jacklyn' -w 8 -wi 5 -l 8 -li 5
+npm start -- calc-wood-needed -n 'Jacklyn' -w 8 -i 5
 ```
 this will give us a results of:
 ```

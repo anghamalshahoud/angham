@@ -137,10 +137,13 @@ function accountForWaste(items: number): number {
     return waste + items;
 }
 
-export function calculateHouseRequirements(inches: number) {
+export function calculateWidthRequirements(widthinfeet:number) {
 
+    // convert feet into inches 
+
+    const outerWidthofHouse = feetintoinches(widthinfeet) ; 
     // calculate the space inbetween corner posts
-     const innerWidthOfHouse = inches - postsWidth * 2;
+     const innerWidthOfHouse = outerWidthofHouse - postsWidth * 2;
 
 
 
@@ -148,7 +151,7 @@ export function calculateHouseRequirements(inches: number) {
      const wall1 = buildWall(innerWidthOfHouse);
 
 
-     const studs = accountForWaste(wall1.studs) * 2;
+     const studs = accountForWaste(wall1.studs) * 2 ;
 
 
      const posts = accountForWaste(wall1.posts) * 2;
