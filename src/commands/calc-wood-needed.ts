@@ -1,20 +1,21 @@
 import fs = require("fs");
-import { Arguments, Argv, number } from "yargs";
-import { calculateHouseRequirements } from "../wallCalculator";
+import { Arguments, Argv, string } from "yargs";
+import { calculateWidthRequirements } from "../wallCalculator";
 import { Houses } from "../house/houses";
-
-
-
-
+import {getCustomersHouses} from "./get_customers"
+ 
+ 
+ 
+ 
 export function calcWoodNeeded(yargs: Argv): void {
     // create a new yargs "command"
     yargs.command(
         // name the command with no spaces
         "calc-wood-needed",
-
+ 
         // describe the command so that the --help flag is helpful
         "Calculate the number of studs required to stick frame a house for Gerald",
-
+ 
         // define the parameters we need for our command
         {
             Name: {
@@ -22,22 +23,22 @@ export function calcWoodNeeded(yargs: Argv): void {
                 alias: "n",
                 description: "The name of the custmer"
             },
-
+ 
             width: {
                 type: "number",
                 alias: "w",
                 description: "The width of the house",
             },
-        
-
-            inches: {
+ 
+            inches:{
                 type: "number",
                 alias: "i",
-                description: "extra inchs for the wall width",
+                description: "extra inches to the width",
             },
+        
             
         },
-
+ 
         // define the function we want to run once the arguments are parsed
         function (
             args: Arguments<{
@@ -49,12 +50,14 @@ export function calcWoodNeeded(yargs: Argv): void {
                 n: string;
             }>
         ) {
-            const calculator = calculateHouseRequirements(args.width);        
-
-
+            const calculator = calculateWidthRequirements(args.width);   
+            
+            
+ 
+ 
             Houses.setWallSuppliesCalculator(( inches: number) => {
-
-              inches = ((args.width * 12) + args.inches);
+ 
+              inches = (args.width * 12) + args.inches;
                 return {
                     name: args.Name,
                     posts: calculator.posts ,
@@ -62,8 +65,10 @@ export function calcWoodNeeded(yargs: Argv): void {
                     plates: calculator.plates
                 } 
             
-            });  void{}    
-
+            }); void {}; 
+ 
+             
+ 
     
             
             const savedHouses = Houses.getAll();
@@ -82,6 +87,7 @@ export function calcWoodNeeded(yargs: Argv): void {
             console.log(house);
         }
             
+        
     );
 }
 
